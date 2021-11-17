@@ -1,25 +1,29 @@
-import { useRef } from "react";
+import { useState } from "react";
 
 const App = () => {
-  const input = useRef();
-  const file = useRef();
-  const submit = () => {
-    console.log(input.current.value);
-    console.log(file.current.files[0]);
-    const form = new FormData();
-    form.append("archivo", file.current.files[0]);
-    form.append("campo", input.current.value);
-    fetch("/lala", { method: "POST", body: form });
+  const [value, setValue] = useState({ normal: "Por defecto", texto: "sss" });
+  const handleChange = (e) => {
+    //   setValue({
+    //     ...value,
+    //     [e.target.name]: e.target.value,
+    //   });
+    // };
+    setValue((state) => ({
+      ...state,
+      [e.target.name]: e.target.value,
+    }));
   };
-
+  console.log(value);
   return (
     <div>
-      <div>
-        <span>Hola</span>
-        <input type="text" name="campo" ref={input}></input>
-        <input type="file" ref={file}></input>
-      </div>
-      <input type="submit" value="Enviar" onClick={submit} />
+      {value.length < 5 ? <span>Logitud minima de 5</span> : null}
+      <input
+        type="text"
+        name="normal"
+        value={value.normal}
+        onChange={handleChange}
+      />
+      <textarea name="texto" value={value.texto} onChange={handleChange} />
     </div>
   );
 };
